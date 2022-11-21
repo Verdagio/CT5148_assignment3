@@ -13,7 +13,7 @@ def read_file() -> dict:
 def find(societies, target) -> list:
     socs = list()
     for s in societies:
-        if target in map(str.lower, societies[s]):
+        if target.lower() in map(str.lower, societies[s]):
             socs.append(societies[s])
     return list(chain(*socs)) # flattenlist of lists (if the target is in multiple socs)
 
@@ -40,7 +40,7 @@ def recursive_search(c, socs, collector=['Dracula']) -> list:
                     return collector
     return collector
 
-def common_communicator(a, b, candidates, societies):
+def common_communicator(a, b, candidates, societies, source, target):
     get_candidate = (lambda t, c: [p for p in c if p in t])
 
     a_cand = get_candidate(a, candidates)
@@ -50,11 +50,11 @@ def common_communicator(a, b, candidates, societies):
     
     relevant_socs = list()
     for v in societies.values():
-        if any(x in v for x in a_cand):
-            relevant_socs.append([i for i in v if i in [*candidates, 'Dracula', 'Pumpkin']])
+        if any(x in v for x in a_cand) or any(x in v for x in b_cand):
+            relevant_socs.append([i for i in v if i in [*candidates, source, target]])
     
     results, i = [], 0
-    while 'Pumpkin' not in results:
+    while target not in results and i < len(a_cand):
         results.append(recursive_search(a_cand[i], relevant_socs))
         results = list(chain(*results))
         i+=1
@@ -62,10 +62,11 @@ def common_communicator(a, b, candidates, societies):
         
 
 if __name__ == "__main__":
+    src, tgt = 'Dracula', 'Pumpkin'
     societies = read_file()
-    d_socs, p_socs = find(societies, 'dracula'), find(societies, 'pumpkin')
+    d_socs, p_socs = find(societies, src), find(societies, tgt)
     multi = get_all_candidates(societies)
-    path = common_communicator(d_socs, p_socs, multi, societies)
+    path = common_communicator(d_socs, p_socs, multi, societies, src, tgt)
 
     if 'Pumpkin' in path:
         print('Dracula can meet Pumpkin! Heres how:')

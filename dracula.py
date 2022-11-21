@@ -40,12 +40,8 @@ def recursive_search(c, socs, collector=['Dracula']) -> list:
                     return collector
     return collector
 
-
 def common_communicator(a, b, candidates, societies):
     get_candidate = (lambda t, c: [p for p in c if p in t])
-    common = get_candidate(a, b)
-    if len(common) > 1:
-        return f"{common}"
 
     a_cand = get_candidate(a, candidates)
     b_cand = get_candidate(b, candidates)
@@ -54,7 +50,7 @@ def common_communicator(a, b, candidates, societies):
     
     relevant_socs = list()
     for v in societies.values():
-        if any(x in v or y in v for x, y in (a_cand, b_cand)):
+        if any(x in v for x in a_cand):
             relevant_socs.append([i for i in v if i in [*candidates, 'Dracula', 'Pumpkin']])
     
     results, i = [], 0

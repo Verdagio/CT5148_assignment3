@@ -1,0 +1,13 @@
+{'Karate Club': ['Cinderella', 'Starr', 'Luke', 'Ronaldo', 'Dracula'],
+ 'Debating Society': ['Tyrion', 'Goblin Queen', 'Lettuce', 'Giant Spider'],
+ 'Musical Society': ['Meatloaf', 'Cat', 'Goblin King', 'Mutant'],
+ 'History Society': ['Steve', 'Tyrion', 'Woody'],
+ 'Football Club': ['Giant Spider', 'Mutant', 'Nemo', 'Goblin King'],
+ 'Formula 1 Club': ['Steve', 'Squid Game Circle', 'Meatloaf'],
+ 'Woodworking Society': ['Cat', 'Frankenstein', 'Winnie the Pooh'],
+ 'Calligraphy Society': ['Cinderella', 'The Fly', 'Pumpkin'],
+ 'Hackers': ['Stitch', 'Goblin Queen', 'Starr', 'Lilo'],
+ 'Investment Society': ['Frankenstein', 'Lennon', 'Squid Game Circle'],
+ 'Enlightenment': ['Galadriel', 'McCartney', 'Slash', 'Gabriel'],
+ 'Young Communists': ['McCartney', 'Leia', 'Nurse'],
+ 'Journalists Club': ['Piglet', 'Lettuce', 'Cinderella']}

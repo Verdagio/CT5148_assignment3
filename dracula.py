@@ -69,7 +69,7 @@ if __name__ == "__main__":
     path = common_communicator(d_socs, p_socs, multi, societies, src, tgt)
 
     if 'Pumpkin' in path:
-        print('Dracula can meet Pumpkin! Heres how:')
+        print('Dracula can pass a message to Pumpkin! Heres how:')
         print(' -> '.join(path))
     else:
-        print("Dracula cannot meet Pumpkin... :(")
+        print("Dracula cannot pass a message to Pumpkin... :(")

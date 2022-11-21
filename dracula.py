@@ -1,7 +1,6 @@
 from collections import Counter
 import sys
 import json
-# import numpy as np
 from itertools import chain
 
 filename = sys.argv[1]
@@ -16,15 +15,33 @@ def find(societies, target) -> list:
     for s in societies:
         if target in map(str.lower, societies[s]):
             socs.append(societies[s])
-    return list(chain(*socs)) # flattenlist of lists (if they target is in multiple socs)
+    return list(chain(*socs)) # flattenlist of lists (if the target is in multiple socs)
 
 def get_all_candidates(societies) -> dict:
     people = list()
     [[people.append(p) for p in societies[s]] for s in societies]
     people = Counter(people)
-    return  [k for k, v in people.items() if v > 1]        
+    return  [k for k, v in people.items() if v > 1]
 
-def common_communicators(a, b, candidates, societies):
+def recursive_search(c, socs, collector=['Dracula']) -> list:
+    if 'Pumpkin' in collector or c in collector:
+        return collector
+    for s in socs:
+        if 'Dracula' not in s:
+            if c in s:
+                collector.append(c) 
+                if 'Pumpkin' not in s: 
+                    x = socs.copy()
+                    x.remove(s)
+                    for si in s:
+                        recursive_search(si, x, collector)
+                else:
+                    collector.append('Pumpkin')
+                    return collector
+    return collector
+
+
+def common_communicator(a, b, candidates, societies):
     get_candidate = (lambda t, c: [p for p in c if p in t])
     common = get_candidate(a, b)
     if len(common) > 1:
@@ -33,31 +50,29 @@ def common_communicators(a, b, candidates, societies):
     a_cand = get_candidate(a, candidates)
     b_cand = get_candidate(b, candidates)
     if len(a_cand) < 1 or len(b_cand) < 1:
-        return 'Dracula will not meet Pumpkin :( </3'
+        return []
     
     relevant_socs = list()
-    # get rid of any socs that our candidates are in
-    for k, v in societies.items():
+    for v in societies.values():
         if any(x in v or y in v for x, y in (a_cand, b_cand)):
-            relevant_socs.append([i for i in v if i in candidates])
-    print(relevant_socs, candidates)
-
-        # print(any(a_cand) in v)
-        # for c in a_cand:
-        #     print(any())filt
-        # if any(c in v for c in a_cand):
-        #     print(c)
-        # # print(k, v)
-
+            relevant_socs.append([i for i in v if i in [*candidates, 'Dracula', 'Pumpkin']])
     
+    results, i = [], 0
+    while 'Pumpkin' not in results:
+        results.append(recursive_search(a_cand[i], relevant_socs))
+        results = list(chain(*results))
+        i+=1
+    return results
         
 
 if __name__ == "__main__":
     societies = read_file()
     d_socs, p_socs = find(societies, 'dracula'), find(societies, 'pumpkin')
     multi = get_all_candidates(societies)
-    path = common_communicators(d_socs, p_socs, multi, societies)
-    print(path)
-    # paths = common_communicators(d_socs, p_socs, societies)
-    
-    # print(d_socs, p_socs)
+    path = common_communicator(d_socs, p_socs, multi, societies)
+
+    if 'Pumpkin' in path:
+        print('Dracula can meet Pumpkin! Heres how:')
+        print(' -> '.join(path))
+    else:
+        print("Dracula cannot meet Pumpkin... :(")
